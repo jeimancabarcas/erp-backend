@@ -1,0 +1,145 @@
+{
+    "info": {
+        "name": "ERP Backend — Inventory API",
+        "description": "Colección para la gestión de productos de inventario",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_postman_id": "erp-inventory-products-v1"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3001",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Inventory — Products",
+            "item": [
+                {
+                    "name": "Crear producto",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"sku\": \"MOU-INL-001\",\n  \"name\": \"Mouse Inalámbrico Logitech\",\n  \"description\": \"Mouse inalámbrico con receptor USB nano\",\n  \"stock\": 50,\n  \"minStock\": 5,\n  \"maxStock\": 100,\n  \"categories\": [\"Periféricos\", \"Computo\"]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/inventory/products",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                "products"
+                            ]
+                        },
+                        "description": "Crea un nuevo producto de inventario. SKU y nombre son obligatorios. Mínimo una categoría."
+                    },
+                    "response": [
+                        {
+                            "name": "Producto creado exitosamente",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"sku\": \"MOU-INL-001\",\n  \"name\": \"Mouse Inalámbrico Logitech\",\n  \"description\": \"Mouse inalámbrico con receptor USB nano\",\n  \"stock\": 50,\n  \"minStock\": 5,\n  \"maxStock\": 100,\n  \"categories\": [\"Periféricos\", \"Computo\"],\n  \"createdAt\": \"2026-03-02T20:00:00.000Z\",\n  \"updatedAt\": \"2026-03-02T20:00:00.000Z\"\n}"
+                        },
+                        {
+                            "name": "Validación fallida",
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"statusCode\": 400,\n  \"message\": [\"El SKU es obligatorio\", \"El nombre es obligatorio\"],\n  \"error\": \"Bad Request\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Crear producto — sin campos opcionales",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"sku\": \"TEC-MEC-001\",\n  \"name\": \"Teclado Mecánico\",\n  \"stock\": 20,\n  \"categories\": [\"Periféricos\"]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/inventory/products",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                "products"
+                            ]
+                        },
+                        "description": "Crea un producto sólo con los campos obligatorios. Description, minStock y maxStock son opcionales."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Listar productos",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/inventory/products",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                "products"
+                            ]
+                        },
+                        "description": "Retorna todos los productos registrados en el inventario."
+                    },
+                    "response": [
+                        {
+                            "name": "Lista de productos",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "[\n  {\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"sku\": \"MOU-INL-001\",\n    \"name\": \"Mouse Inalámbrico Logitech\",\n    \"description\": \"Mouse inalámbrico con receptor USB nano\",\n    \"stock\": 50,\n    \"minStock\": 5,\n    \"maxStock\": 100,\n    \"categories\": [\"Periféricos\", \"Computo\"],\n    \"createdAt\": \"2026-03-02T20:00:00.000Z\",\n    \"updatedAt\": \"2026-03-02T20:00:00.000Z\"\n  }\n]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
