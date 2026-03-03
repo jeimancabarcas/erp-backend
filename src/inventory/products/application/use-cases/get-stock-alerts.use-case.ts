@@ -9,7 +9,7 @@ export class GetStockAlertsUseCase {
 
     async execute(): Promise<StockAlertResponseDto> {
         // Fetch all products (or use a specialized query if performance is an issue)
-        const allProducts = await this.productRepository.findAll();
+        const { data: allProducts } = await this.productRepository.findAll({ limit: 10000 });
 
         const outOfStock = allProducts.filter(p => p.stock === 0);
         const lowStock = allProducts.filter(p => p.stock > 0 && p.minStock !== null && p.stock < p.minStock);

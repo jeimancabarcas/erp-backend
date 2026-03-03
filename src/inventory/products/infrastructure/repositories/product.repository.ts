@@ -15,21 +15,30 @@ export class TypeOrmProductRepository extends ProductRepository {
         super();
     }
 
-    async findAll(query?: GetProductsQueryDto): Promise<Product[]> {
+    async findAll(query?: GetProductsQueryDto): Promise<{ data: Product[]; total: number }> {
         const qb = this.ormRepo.createQueryBuilder('p')
             .leftJoinAndSelect('p.categories', 'category');
 
         if (query?.search) {
-            const term = `%${query.search}%`;
-            qb.where('p.name ILIKE :term OR p.sku ILIKE :term', { term });
+            const term = `%${query.search.toLowerCase()}%`;
+            qb.where('LOWER(p.name) LIKE :term OR LOWER(p.sku) LIKE :term', { term });
         }
 
         const sortField = query?.sortBy ?? 'createdAt';
         const sortOrder = query?.sortOrder?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
         qb.orderBy(`p.${sortField}`, sortOrder);
 
-        const rows = await qb.getMany();
-        return rows.map(this.toDomain);
+        // Pagination
+        const page = query?.page ?? 1;
+        const limit = query?.limit ?? 10;
+        qb.skip((page - 1) * limit);
+        qb.take(limit);
+
+        const [rows, total] = await qb.getManyAndCount();
+        return {
+            data: rows.map(this.toDomain),
+            total
+        };
     }
 
     async findById(id: string): Promise<Product | null> {

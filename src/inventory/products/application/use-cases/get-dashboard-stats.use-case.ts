@@ -11,8 +11,8 @@ export class GetDashboardStatsUseCase {
     ) { }
 
     async execute(): Promise<DashboardStatsResponseDto> {
-        const allProducts = await this.productRepository.findAll();
-        const allMovements = await this.movementRepository.findAll();
+        const { data: allProducts, total: totalProductsCount } = await this.productRepository.findAll({ limit: 10000 });
+        const { data: allMovements } = await this.movementRepository.findAll({ limit: 10000 }); // All movements recently
 
         const now = new Date();
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -66,7 +66,7 @@ export class GetDashboardStatsUseCase {
         }));
 
         return {
-            totalProducts: allProducts.length,
+            totalProducts: totalProductsCount,
             totalStock: totalStock,
             recentEntries: recentEntriesCount,
             recentExits: recentExitsCount,

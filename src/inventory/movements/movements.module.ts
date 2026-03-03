@@ -5,6 +5,7 @@ import { TypeOrmMovementRepository } from './infrastructure/repositories/typeorm
 import { MovementRepository } from './domain/movement.repository';
 import { CreateMovementUseCase } from './application/use-cases/create-movement.use-case';
 import { GetMovementsUseCase } from './application/use-cases/get-movements.use-case';
+import { GetMovementsMonthlyStatsUseCase } from './application/use-cases/get-movements-monthly-stats.use-case';
 import { MovementsController } from './presentation/movements.controller';
 import { ProductsModule } from '../products/products.module'; // Import ProductsModule to use ProductRepository
 
@@ -21,6 +22,7 @@ import { ProductsModule } from '../products/products.module'; // Import Products
         },
         CreateMovementUseCase,
         GetMovementsUseCase,
+        GetMovementsMonthlyStatsUseCase,
     ],
     exports: [MovementRepository],
 })

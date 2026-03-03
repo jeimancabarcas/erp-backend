@@ -25,12 +25,55 @@ export class TypeOrmMovementRepository implements MovementRepository {
         return this.toDomain(fullEntity!);
     }
 
-    async findAll(): Promise<Movement[]> {
-        const entities = await this.repository.find({
-            relations: ['product'],
-            order: { createdAt: 'DESC' }
-        });
-        return entities.map(e => this.toDomain(e));
+    async findAll(query?: any): Promise<{ data: Movement[], total: number }> {
+        const qb = this.repository.createQueryBuilder('movement');
+        qb.leftJoinAndSelect('movement.product', 'product');
+
+        if (query) {
+            const { search, direction, type, sortBy, sortOrder, page, limit } = query;
+
+            if (search) {
+                qb.andWhere(
+                    '(product.name ILIKE :search OR product.sku ILIKE :search OR movement.reference ILIKE :search)',
+                    { search: `%${search}%` }
+                );
+            }
+
+            if (direction) {
+                qb.andWhere('movement.direction = :direction', { direction });
+            }
+
+            if (type) {
+                qb.andWhere('movement.type = :type', { type });
+            }
+
+            // Sorting
+            const order = sortOrder?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+            const sortMapping: Record<string, string> = {
+                date: 'movement.date',
+                productName: 'product.name',
+                productSku: 'product.sku',
+                quantity: 'movement.quantity',
+                createdAt: 'movement.createdAt'
+            };
+
+            const sortField = sortMapping[sortBy] || 'movement.createdAt';
+            qb.orderBy(sortField, order);
+
+            // Pagination
+            const p = page ? parseInt(page.toString(), 10) : 1;
+            const l = limit ? parseInt(limit.toString(), 10) : 10;
+            const skip = (p - 1) * l;
+            qb.skip(skip).take(l);
+        } else {
+            qb.orderBy('movement.createdAt', 'DESC');
+        }
+
+        const [entities, total] = await qb.getManyAndCount();
+        return {
+            data: entities.map(e => this.toDomain(e)),
+            total
+        };
     }
 
     async findByProductId(productId: string): Promise<Movement[]> {

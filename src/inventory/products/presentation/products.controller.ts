@@ -33,6 +33,7 @@ import { GetProductsQueryDto } from '../application/dtos/get-products-query.dto'
 import { GetStockAlertsUseCase } from '../application/use-cases/get-stock-alerts.use-case';
 import { GetDashboardStatsUseCase } from '../application/use-cases/get-dashboard-stats.use-case';
 import { DashboardStatsResponseDto } from '../application/dtos/dashboard-stats-response.dto';
+import { ProductsListResponseDto } from '../application/dtos/products-list-response.dto';
 
 @ApiTags('inventory-products')
 @Controller('inventory/products')
@@ -57,8 +58,8 @@ export class ProductsController {
     @Get()
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
     @ApiOperation({ summary: 'Listar productos de inventario con filtro y orden opcionales' })
-    @ApiOkResponse({ description: 'Lista de productos', type: [ProductResponseDto] })
-    findAll(@Query() query: GetProductsQueryDto): Promise<ProductResponseDto[]> {
+    @ApiOkResponse({ description: 'Lista de productos', type: ProductsListResponseDto })
+    findAll(@Query() query: GetProductsQueryDto): Promise<ProductsListResponseDto> {
         return this.getProductsUseCase.execute(query);
     }
 
