@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductRepository } from './domain/product.repository';
 import { TypeOrmProductRepository } from './infrastructure/repositories/product.repository';
@@ -8,10 +8,12 @@ import { GetProductsUseCase } from './application/use-cases/get-products.use-cas
 import { UpdateProductUseCase } from './application/use-cases/update-product.use-case';
 import { DeleteProductUseCase } from './application/use-cases/delete-product.use-case';
 import { ProductsController } from './presentation/products.controller';
+import { MovementsModule } from '../movements/movements.module';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([ProductOrmEntity]),
+        forwardRef(() => MovementsModule),
     ],
     controllers: [ProductsController],
     providers: [
@@ -24,6 +26,6 @@ import { ProductsController } from './presentation/products.controller';
         UpdateProductUseCase,
         DeleteProductUseCase,
     ],
-    exports: [GetProductsUseCase],
+    exports: [GetProductsUseCase, ProductRepository],
 })
 export class ProductsModule { }
