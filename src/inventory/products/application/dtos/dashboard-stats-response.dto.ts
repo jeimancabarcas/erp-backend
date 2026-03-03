@@ -1,8 +1,10 @@
 export class DashboardStatsResponseDto {
     totalProducts: number;
     totalStock: number;
-    recentEntries: number; // Sum of quantities? Or count of movements?
+    recentEntries: number;
     recentExits: number;
     outOfStockCount: number;
     lowStockCount: number;
+    movementTrend: { date: string; entries: number; exits: number }[];
+    movementTypeDistribution: { type: string; count: number }[];
 }
