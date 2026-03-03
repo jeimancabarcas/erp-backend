@@ -28,7 +28,9 @@ import { DeleteProductUseCase } from '../application/use-cases/delete-product.us
 import { CreateProductDto } from '../application/dtos/create-product.dto';
 import { UpdateProductDto } from '../application/dtos/update-product.dto';
 import { ProductResponseDto } from '../application/dtos/product-response.dto';
+import { StockAlertResponseDto } from '../application/dtos/stock-alert-response.dto';
 import { GetProductsQueryDto } from '../application/dtos/get-products-query.dto';
+import { GetStockAlertsUseCase } from '../application/use-cases/get-stock-alerts.use-case';
 
 @ApiTags('inventory-products')
 @Controller('inventory/products')
@@ -36,6 +38,7 @@ export class ProductsController {
     constructor(
         private readonly createProductUseCase: CreateProductUseCase,
         private readonly getProductsUseCase: GetProductsUseCase,
+        private readonly getStockAlertsUseCase: GetStockAlertsUseCase,
         private readonly updateProductUseCase: UpdateProductUseCase,
         private readonly deleteProductUseCase: DeleteProductUseCase,
     ) { }
@@ -54,6 +57,13 @@ export class ProductsController {
     @ApiOkResponse({ description: 'Lista de productos', type: [ProductResponseDto] })
     findAll(@Query() query: GetProductsQueryDto): Promise<ProductResponseDto[]> {
         return this.getProductsUseCase.execute(query);
+    }
+
+    @Get('alerts')
+    @ApiOperation({ summary: 'Obtener alertas de stock (bajo o agotado)' })
+    @ApiOkResponse({ description: 'Alertas de stock', type: StockAlertResponseDto })
+    getAlerts(): Promise<StockAlertResponseDto> {
+        return this.getStockAlertsUseCase.execute();
     }
 
     @Put(':id')
