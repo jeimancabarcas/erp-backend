@@ -34,6 +34,14 @@ export class TypeOrmUserRepository extends UserRepository {
         return this.toDomain(saved);
     }
 
+    async updateProfile(id: string, profile: Partial<UserProfile>): Promise<void> {
+        await this.profileRepo.update({ userId: id }, profile);
+    }
+
+    async updateCredentials(id: string, passwordHash: string): Promise<void> {
+        await this.userRepo.update(id, { password: passwordHash });
+    }
+
     private toDomain(row: UserOrmEntity): User {
         const profile = row.profile ? new UserProfile(
             row.profile.id,

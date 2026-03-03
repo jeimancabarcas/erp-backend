@@ -3,6 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './presentation/auth.controller';
 import { LoginUseCase } from './application/use-cases/login.use-case';
+import { UpdateProfileUseCase } from './application/use-cases/update-profile.use-case';
+import { ChangePasswordUseCase } from './application/use-cases/change-password.use-case';
 import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
 import { UsersModule } from '../users/users.module';
 
@@ -16,7 +18,7 @@ import { UsersModule } from '../users/users.module';
         }),
     ],
     controllers: [AuthController],
-    providers: [LoginUseCase, JwtStrategy],
-    exports: [LoginUseCase],
+    providers: [LoginUseCase, UpdateProfileUseCase, ChangePasswordUseCase, JwtStrategy],
+    exports: [LoginUseCase, UpdateProfileUseCase, ChangePasswordUseCase],
 })
 export class AuthModule { }
