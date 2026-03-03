@@ -31,6 +31,8 @@ import { ProductResponseDto } from '../application/dtos/product-response.dto';
 import { StockAlertResponseDto } from '../application/dtos/stock-alert-response.dto';
 import { GetProductsQueryDto } from '../application/dtos/get-products-query.dto';
 import { GetStockAlertsUseCase } from '../application/use-cases/get-stock-alerts.use-case';
+import { GetDashboardStatsUseCase } from '../application/use-cases/get-dashboard-stats.use-case';
+import { DashboardStatsResponseDto } from '../application/dtos/dashboard-stats-response.dto';
 
 @ApiTags('inventory-products')
 @Controller('inventory/products')
@@ -39,6 +41,7 @@ export class ProductsController {
         private readonly createProductUseCase: CreateProductUseCase,
         private readonly getProductsUseCase: GetProductsUseCase,
         private readonly getStockAlertsUseCase: GetStockAlertsUseCase,
+        private readonly getDashboardStatsUseCase: GetDashboardStatsUseCase,
         private readonly updateProductUseCase: UpdateProductUseCase,
         private readonly deleteProductUseCase: DeleteProductUseCase,
     ) { }
@@ -64,6 +67,13 @@ export class ProductsController {
     @ApiOkResponse({ description: 'Alertas de stock', type: StockAlertResponseDto })
     getAlerts(): Promise<StockAlertResponseDto> {
         return this.getStockAlertsUseCase.execute();
+    }
+
+    @Get('stats')
+    @ApiOperation({ summary: 'Obtener estadísticas generales del dashboard' })
+    @ApiOkResponse({ description: 'Estadísticas del dashboard', type: DashboardStatsResponseDto })
+    getStats(): Promise<DashboardStatsResponseDto> {
+        return this.getDashboardStatsUseCase.execute();
     }
 
     @Put(':id')
