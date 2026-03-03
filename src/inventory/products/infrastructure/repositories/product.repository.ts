@@ -35,6 +35,10 @@ export class TypeOrmProductRepository extends ProductRepository {
         return this.toDomain(saved);
     }
 
+    async delete(id: string): Promise<void> {
+        await this.ormRepo.delete(id);
+    }
+
     // ── Mappers ────────────────────────────────────────────────────────────
     private toDomain(row: ProductOrmEntity): Product {
         return new Product(
