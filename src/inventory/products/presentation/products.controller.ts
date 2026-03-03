@@ -9,6 +9,9 @@ import {
     Delete,
     Param,
     ParseUUIDPipe,
+    Query,
+    UsePipes,
+    ValidationPipe,
 } from '@nestjs/common';
 import {
     ApiTags,
@@ -25,6 +28,7 @@ import { DeleteProductUseCase } from '../application/use-cases/delete-product.us
 import { CreateProductDto } from '../application/dtos/create-product.dto';
 import { UpdateProductDto } from '../application/dtos/update-product.dto';
 import { ProductResponseDto } from '../application/dtos/product-response.dto';
+import { GetProductsQueryDto } from '../application/dtos/get-products-query.dto';
 
 @ApiTags('inventory-products')
 @Controller('inventory/products')
@@ -45,10 +49,11 @@ export class ProductsController {
     }
 
     @Get()
-    @ApiOperation({ summary: 'Listar todos los productos de inventario' })
+    @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+    @ApiOperation({ summary: 'Listar productos de inventario con filtro y orden opcionales' })
     @ApiOkResponse({ description: 'Lista de productos', type: [ProductResponseDto] })
-    findAll(): Promise<ProductResponseDto[]> {
-        return this.getProductsUseCase.execute();
+    findAll(@Query() query: GetProductsQueryDto): Promise<ProductResponseDto[]> {
+        return this.getProductsUseCase.execute(query);
     }
 
     @Put(':id')

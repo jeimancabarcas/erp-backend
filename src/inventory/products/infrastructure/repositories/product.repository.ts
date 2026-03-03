@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Product } from '../../domain/product.entity';
 import { ProductRepository } from '../../domain/product.repository';
 import { ProductOrmEntity } from '../entities/product.orm-entity';
+import { GetProductsQueryDto } from '../../application/dtos/get-products-query.dto';
 
 @Injectable()
 export class TypeOrmProductRepository extends ProductRepository {
@@ -14,8 +15,19 @@ export class TypeOrmProductRepository extends ProductRepository {
         super();
     }
 
-    async findAll(): Promise<Product[]> {
-        const rows = await this.ormRepo.find({ order: { createdAt: 'DESC' } });
+    async findAll(query?: GetProductsQueryDto): Promise<Product[]> {
+        const qb = this.ormRepo.createQueryBuilder('p');
+
+        if (query?.search) {
+            const term = `%${query.search}%`;
+            qb.where('p.name ILIKE :term OR p.sku ILIKE :term', { term });
+        }
+
+        const sortField = query?.sortBy ?? 'createdAt';
+        const sortOrder = query?.sortOrder?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+        qb.orderBy(`p.${sortField}`, sortOrder);
+
+        const rows = await qb.getMany();
         return rows.map(this.toDomain);
     }
 
