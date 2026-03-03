@@ -9,6 +9,7 @@ import {
     ParseUUIDPipe,
     Post,
     Put,
+    UseGuards,
 } from '@nestjs/common';
 import {
     ApiCreatedResponse,
@@ -17,7 +18,9 @@ import {
     ApiOkResponse,
     ApiOperation,
     ApiTags,
+    ApiBearerAuth,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt-auth.guard';
 import { GetCategoriesUseCase } from '../application/use-cases/get-categories.use-case';
 import { CreateCategoryUseCase } from '../application/use-cases/create-category.use-case';
 import { UpdateCategoryUseCase } from '../application/use-cases/update-category.use-case';
@@ -27,6 +30,8 @@ import { UpdateCategoryDto } from '../application/dtos/update-category.dto';
 import { CategoryResponseDto } from '../application/dtos/category-response.dto';
 
 @ApiTags('inventory-categories')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('inventory/categories')
 export class CategoriesController {
     constructor(

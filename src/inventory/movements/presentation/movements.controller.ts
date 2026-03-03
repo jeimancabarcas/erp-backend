@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Query, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Query, UsePipes, ValidationPipe, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt-auth.guard';
 import { CreateMovementUseCase } from '../application/use-cases/create-movement.use-case';
 import { GetMovementsUseCase } from '../application/use-cases/get-movements.use-case';
 import { GetMovementsMonthlyStatsUseCase } from '../application/use-cases/get-movements-monthly-stats.use-case';
@@ -9,6 +10,8 @@ import { CreateMovementDto } from '../application/dtos/create-movement.dto';
 import { MovementResponseDto } from '../application/dtos/movement-response.dto';
 
 @ApiTags('Inventory - Movements')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('inventory/movements')
 export class MovementsController {
     constructor(

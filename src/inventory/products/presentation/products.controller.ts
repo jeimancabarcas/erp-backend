@@ -12,6 +12,7 @@ import {
     Query,
     UsePipes,
     ValidationPipe,
+    UseGuards,
 } from '@nestjs/common';
 import {
     ApiTags,
@@ -20,6 +21,7 @@ import {
     ApiOkResponse,
     ApiNoContentResponse,
     ApiNotFoundResponse,
+    ApiBearerAuth,
 } from '@nestjs/swagger';
 import { CreateProductUseCase } from '../application/use-cases/create-product.use-case';
 import { GetProductsUseCase } from '../application/use-cases/get-products.use-case';
@@ -34,8 +36,11 @@ import { GetStockAlertsUseCase } from '../application/use-cases/get-stock-alerts
 import { GetDashboardStatsUseCase } from '../application/use-cases/get-dashboard-stats.use-case';
 import { DashboardStatsResponseDto } from '../application/dtos/dashboard-stats-response.dto';
 import { ProductsListResponseDto } from '../application/dtos/products-list-response.dto';
+import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt-auth.guard';
 
 @ApiTags('inventory-products')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('inventory/products')
 export class ProductsController {
     constructor(
