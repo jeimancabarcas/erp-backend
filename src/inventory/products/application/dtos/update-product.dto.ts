@@ -49,9 +49,9 @@ export class UpdateProductDto {
     @Type(() => Number)
     maxStock?: number;
 
-    @ApiPropertyOptional({ example: ['Periféricos', 'Computo'] })
+    @ApiPropertyOptional({ example: ['uuid-1', 'uuid-2'] })
     @IsArray()
     @IsString({ each: true })
     @IsOptional()
-    categories?: string[];
+    categoryIds?: string[];
 }

@@ -5,7 +5,6 @@ import {
     Min,
     IsOptional,
     IsArray,
-    ArrayMinSize,
     MaxLength,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -50,9 +49,9 @@ export class CreateProductDto {
     @Type(() => Number)
     maxStock?: number;
 
-    @ApiProperty({ example: ['Periféricos', 'Computo'], description: 'Lista de categorías del producto' })
+    @ApiPropertyOptional({ example: ['uuid-1', 'uuid-2'], description: 'Lista de IDs de categorías del producto' })
     @IsArray()
-    @ArrayMinSize(1, { message: 'Selecciona al menos una categoría' })
+    @IsOptional()
     @IsString({ each: true })
-    categories: string[];
+    categoryIds?: string[];
 }

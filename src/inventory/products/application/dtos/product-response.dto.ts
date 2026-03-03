@@ -23,8 +23,8 @@ export class ProductResponseDto {
     @ApiPropertyOptional({ example: 100, nullable: true })
     maxStock: number | null;
 
-    @ApiProperty({ example: ['Periféricos', 'Computo'] })
-    categories: string[];
+    @ApiProperty({ example: [{ id: 'uuid-1', name: 'Periféricos' }] })
+    categories: { id: string; name: string }[];
 
     @ApiProperty({ example: '2026-03-02T20:00:00.000Z' })
     createdAt: Date;

@@ -7,8 +7,8 @@ export class Product {
     public readonly stock: number,
     public readonly minStock: number | null,
     public readonly maxStock: number | null,
-    public readonly categories: string[],
+    public readonly categories: { id: string; name: string }[],
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
-  ) {}
+  ) { }
 }

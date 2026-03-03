@@ -16,7 +16,8 @@ export class TypeOrmProductRepository extends ProductRepository {
     }
 
     async findAll(query?: GetProductsQueryDto): Promise<Product[]> {
-        const qb = this.ormRepo.createQueryBuilder('p');
+        const qb = this.ormRepo.createQueryBuilder('p')
+            .leftJoinAndSelect('p.categories', 'category');
 
         if (query?.search) {
             const term = `%${query.search}%`;
@@ -32,12 +33,12 @@ export class TypeOrmProductRepository extends ProductRepository {
     }
 
     async findById(id: string): Promise<Product | null> {
-        const row = await this.ormRepo.findOne({ where: { id } });
+        const row = await this.ormRepo.findOne({ where: { id }, relations: ['categories'] });
         return row ? this.toDomain(row) : null;
     }
 
     async findBySku(sku: string): Promise<Product | null> {
-        const row = await this.ormRepo.findOne({ where: { sku } });
+        const row = await this.ormRepo.findOne({ where: { sku }, relations: ['categories'] });
         return row ? this.toDomain(row) : null;
     }
 
@@ -61,7 +62,7 @@ export class TypeOrmProductRepository extends ProductRepository {
             row.stock,
             row.minStock,
             row.maxStock,
-            row.categories,
+            row.categories?.map(c => ({ id: c.id, name: c.name })) || [],
             row.createdAt,
             row.updatedAt,
         );
@@ -76,7 +77,7 @@ export class TypeOrmProductRepository extends ProductRepository {
             stock: product.stock,
             minStock: product.minStock,
             maxStock: product.maxStock,
-            categories: product.categories,
+            categories: product.categories.map(c => ({ id: c.id } as any)),
         };
     }
 }

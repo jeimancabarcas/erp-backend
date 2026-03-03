@@ -29,7 +29,7 @@ export class CreateProductUseCase {
             dto.stock,
             dto.minStock ?? null,
             dto.maxStock ?? null,
-            dto.categories,
+            dto.categoryIds ? dto.categoryIds.map(id => ({ id, name: '' })) : [],
             now,
             now,
         );

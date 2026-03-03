@@ -4,8 +4,10 @@ import {
     Column,
     CreateDateColumn,
     UpdateDateColumn,
+    ManyToMany,
+    JoinTable,
 } from 'typeorm';
-
+import { CategoryOrmEntity } from '../../../categories/infrastructure/entities/category.orm-entity';
 @Entity('products')
 export class ProductOrmEntity {
     @PrimaryGeneratedColumn('uuid')
@@ -29,8 +31,13 @@ export class ProductOrmEntity {
     @Column({ name: 'max_stock', type: 'int', nullable: true, default: null })
     maxStock: number | null;
 
-    @Column({ type: 'simple-array', default: '' })
-    categories: string[];
+    @ManyToMany(() => CategoryOrmEntity)
+    @JoinTable({
+        name: 'product_categories',
+        joinColumn: { name: 'product_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'category_id', referencedColumnName: 'id' }
+    })
+    categories: CategoryOrmEntity[];
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;

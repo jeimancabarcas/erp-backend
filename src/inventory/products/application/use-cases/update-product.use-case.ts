@@ -34,7 +34,7 @@ export class UpdateProductUseCase {
             dto.stock ?? existing.stock,
             dto.minStock !== undefined ? dto.minStock : existing.minStock,
             dto.maxStock !== undefined ? dto.maxStock : existing.maxStock,
-            dto.categories ?? existing.categories,
+            dto.categoryIds ? dto.categoryIds.map(id => ({ id, name: '' })) : existing.categories,
             existing.createdAt,
             new Date(),
         );
