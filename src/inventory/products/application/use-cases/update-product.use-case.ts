@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { ProductRepository } from '../../domain/product.repository';
 import { UpdateProductDto } from '../dtos/update-product.dto';
 import { ProductResponseDto } from '../dtos/product-response.dto';
@@ -12,6 +12,18 @@ export class UpdateProductUseCase {
         const existing = await this.productRepository.findById(id);
         if (!existing) {
             throw new NotFoundException(`Producto con id "${id}" no encontrado`);
+        }
+
+        // If SKU is being changed, check that the new SKU isn't taken by another product
+        if (dto.sku && dto.sku !== existing.sku) {
+            const conflict = await this.productRepository.findBySku(dto.sku);
+            if (conflict) {
+                throw new ConflictException({
+                    message: `El SKU '${dto.sku}' ya está en uso por otro producto`,
+                    errorCode: 'PRODUCT_SKU_DUPLICATE',
+                    field: 'sku',
+                });
+            }
         }
 
         const updated = new Product(

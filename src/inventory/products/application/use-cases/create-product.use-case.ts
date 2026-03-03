@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { ProductRepository } from '../../domain/product.repository';
 import { CreateProductDto } from '../dtos/create-product.dto';
 import { ProductResponseDto } from '../dtos/product-response.dto';
@@ -10,6 +10,16 @@ export class CreateProductUseCase {
     constructor(private readonly productRepository: ProductRepository) { }
 
     async execute(dto: CreateProductDto): Promise<ProductResponseDto> {
+        // Check for duplicate SKU
+        const existing = await this.productRepository.findBySku(dto.sku);
+        if (existing) {
+            throw new ConflictException({
+                message: `El SKU '${dto.sku}' ya está en uso por otro producto`,
+                errorCode: 'PRODUCT_SKU_DUPLICATE',
+                field: 'sku',
+            });
+        }
+
         const now = new Date();
         const product = new Product(
             randomUUID(),
