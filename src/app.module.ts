@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { InventoryModule } from './inventory/inventory.module';
 import { ProductOrmEntity } from './inventory/products/infrastructure/entities/product.orm-entity';
+import { CategoryOrmEntity } from './inventory/categories/infrastructure/entities/category.orm-entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { ProductOrmEntity } from './inventory/products/infrastructure/entities/p
         database: config.get<string>('DB_NAME', 'inventory_db'),
         username: config.get<string>('DB_USER', 'admin'),
         password: config.get<string>('DB_PASSWORD', ''),
-        entities: [ProductOrmEntity],
+        entities: [ProductOrmEntity, CategoryOrmEntity],
         // synchronize: true creates/updates the table automatically on startup.
         // ⚠️ Set to false in production and use migrations instead.
         synchronize: true,
