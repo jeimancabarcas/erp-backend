@@ -12,11 +12,17 @@ export class UpdateProfileUseCase {
             throw new NotFoundException('User not found');
         }
 
-        await this.userRepository.updateProfile(userId, {
+        const updateData: any = {
             fullName: dto.fullName,
             address: dto.address,
             phone: dto.phone,
             displayName: dto.displayName,
-        });
+        };
+
+        if (dto.avatarUrl !== undefined) {
+            updateData.avatarUrl = dto.avatarUrl;
+        }
+
+        await this.userRepository.updateProfile(userId, updateData);
     }
 }

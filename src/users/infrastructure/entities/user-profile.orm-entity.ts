@@ -18,6 +18,9 @@ export class UserProfileOrmEntity {
     @Column({ name: 'display_name', nullable: true })
     displayName: string;
 
+    @Column({ name: 'avatar_url', nullable: true })
+    avatarUrl: string;
+
     @Column({ name: 'user_id' })
     userId: string;
 

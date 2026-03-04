@@ -21,4 +21,8 @@ export class UpdateProfileDto {
     @IsOptional()
     @IsString()
     displayName?: string;
+
+    @ApiProperty({ example: '/uploads/abc123_.jpg', required: false, nullable: true })
+    @IsOptional()
+    avatarUrl?: string | null;
 }

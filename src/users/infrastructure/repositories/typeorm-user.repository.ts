@@ -35,7 +35,7 @@ export class TypeOrmUserRepository extends UserRepository {
     }
 
     async updateProfile(id: string, profile: Partial<UserProfile>): Promise<void> {
-        await this.profileRepo.update({ userId: id }, profile);
+        await this.profileRepo.update({ userId: id }, profile as any);
     }
 
     async updateCredentials(id: string, passwordHash: string): Promise<void> {
@@ -49,7 +49,8 @@ export class TypeOrmUserRepository extends UserRepository {
             row.profile.address,
             row.profile.phone,
             row.profile.displayName,
-            row.profile.userId
+            row.profile.userId,
+            row.profile.avatarUrl
         ) : null;
 
         return new User(
@@ -73,6 +74,7 @@ export class TypeOrmUserRepository extends UserRepository {
             pOrm.address = user.profile.address;
             pOrm.phone = user.profile.phone;
             pOrm.displayName = user.profile.displayName;
+            pOrm.avatarUrl = user.profile.avatarUrl as any;
             pOrm.userId = user.id;
             orm.profile = pOrm;
         }

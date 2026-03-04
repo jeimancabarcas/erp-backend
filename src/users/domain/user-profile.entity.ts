@@ -6,5 +6,6 @@ export class UserProfile {
         public readonly phone: string,
         public readonly displayName: string,
         public readonly userId: string,
+        public readonly avatarUrl: string | null = null,
     ) { }
 }
