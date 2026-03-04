@@ -1,5 +1,5 @@
-import { IsOptional, IsString, IsIn, IsInt, Min } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsOptional, IsString, IsIn, IsInt, Min, IsBoolean } from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class GetProductsQueryDto {
@@ -31,4 +31,10 @@ export class GetProductsQueryDto {
     @IsInt()
     @Min(1)
     limit?: number = 10;
+
+    @ApiPropertyOptional({ description: 'Exclude products already linked to billing products' })
+    @IsOptional()
+    @Transform(({ value }) => value === 'true' || value === true)
+    @IsBoolean()
+    excludeBillingLinked?: boolean;
 }

@@ -11,6 +11,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { UserOrmEntity } from './users/infrastructure/entities/user.orm-entity';
 import { UserProfileOrmEntity } from './users/infrastructure/entities/user-profile.orm-entity';
+import { BillingModule } from './billing/billing.module';
+import { BillingProduct } from './billing/domain/entities/billing-product.entity';
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { UserProfileOrmEntity } from './users/infrastructure/entities/user-profi
           MovementOrmEntity,
           UserOrmEntity,
           UserProfileOrmEntity,
+          BillingProduct,
         ],
         // synchronize: true creates/updates the table automatically on startup.
         // ⚠️ Set to false in production and use migrations instead.
@@ -45,6 +48,7 @@ import { UserProfileOrmEntity } from './users/infrastructure/entities/user-profi
     InventoryModule,
     UsersModule,
     AuthModule,
+    BillingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

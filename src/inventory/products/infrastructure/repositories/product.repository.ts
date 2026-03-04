@@ -21,7 +21,11 @@ export class TypeOrmProductRepository extends ProductRepository {
 
         if (query?.search) {
             const term = `%${query.search.toLowerCase()}%`;
-            qb.where('LOWER(p.name) LIKE :term OR LOWER(p.sku) LIKE :term', { term });
+            qb.where('(LOWER(p.name) LIKE :term OR LOWER(p.sku) LIKE :term)', { term });
+        }
+
+        if (query?.excludeBillingLinked) {
+            qb.andWhere('p.id NOT IN (SELECT "inventoryProductId" FROM billing_products WHERE "inventoryProductId" IS NOT NULL)');
         }
 
         const sortField = query?.sortBy ?? 'createdAt';
