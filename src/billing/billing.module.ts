@@ -45,6 +45,13 @@ import { UpdateBillingClientUseCase } from './application/use-cases/update-billi
 import { DeleteBillingClientUseCase } from './application/use-cases/delete-billing-client.use-case';
 import { BillingClientsController } from './presentation/billing-clients.controller';
 
+import { BillingTemplatePreference } from './domain/entities/billing-template-preference.entity';
+import { BILLING_TEMPLATE_PREFERENCE_REPOSITORY } from './domain/repositories/billing-template-preference.repository';
+import { TypeOrmBillingTemplatePreferenceRepository } from './infrastructure/repositories/typeorm-billing-template-preference.repository';
+import { GetTemplatePreferenceUseCase } from './application/use-cases/get-template-preference.use-case';
+import { UpsertTemplatePreferenceUseCase } from './application/use-cases/upsert-template-preference.use-case';
+import { BillingTemplatePreferencesController } from './presentation/billing-template-preferences.controller';
+
 @Module({
     imports: [TypeOrmModule.forFeature([
         BillingProduct,
@@ -52,6 +59,7 @@ import { BillingClientsController } from './presentation/billing-clients.control
         BillingTax,
         BillingPaymentMethod,
         BillingClient,
+        BillingTemplatePreference,
     ])],
     controllers: [
         BillingProductsController,
@@ -59,6 +67,7 @@ import { BillingClientsController } from './presentation/billing-clients.control
         BillingTaxesController,
         BillingPaymentMethodsController,
         BillingClientsController,
+        BillingTemplatePreferencesController,
     ],
     providers: [
         {
@@ -101,6 +110,12 @@ import { BillingClientsController } from './presentation/billing-clients.control
         GetBillingClientsUseCase,
         UpdateBillingClientUseCase,
         DeleteBillingClientUseCase,
+        {
+            provide: BILLING_TEMPLATE_PREFERENCE_REPOSITORY,
+            useClass: TypeOrmBillingTemplatePreferenceRepository,
+        },
+        GetTemplatePreferenceUseCase,
+        UpsertTemplatePreferenceUseCase,
     ],
     exports: [],
 })

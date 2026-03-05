@@ -16,6 +16,7 @@ import { BillingPaymentMethod } from './billing/domain/entities/billing-payment-
 import { UserOrmEntity } from './users/infrastructure/entities/user.orm-entity';
 import { UserProfileOrmEntity } from './users/infrastructure/entities/user-profile.orm-entity';
 import { BillingClient } from './billing/domain/entities/billing-client.entity';
+import { BillingTemplatePreference } from './billing/domain/entities/billing-template-preference.entity';
 import { BillingModule } from './billing/billing.module';
 
 @Module({
@@ -45,6 +46,7 @@ import { BillingModule } from './billing/billing.module';
           BillingTax,
           BillingPaymentMethod,
           BillingClient,
+          BillingTemplatePreference,
         ],
         // synchronize: true creates/updates the table automatically on startup.
         // ⚠️ Set to false in production and use migrations instead.
