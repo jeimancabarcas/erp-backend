@@ -9,11 +9,14 @@ import { CategoryOrmEntity } from './inventory/categories/infrastructure/entitie
 import { MovementOrmEntity } from './inventory/movements/infrastructure/entities/movement.orm-entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { UserOrmEntity } from './users/infrastructure/entities/user.orm-entity';
-import { UserProfileOrmEntity } from './users/infrastructure/entities/user-profile.orm-entity';
-import { BillingModule } from './billing/billing.module';
 import { BillingProduct } from './billing/domain/entities/billing-product.entity';
 import { BillingService } from './billing/domain/entities/billing-service.entity';
+import { BillingTax } from './billing/domain/entities/billing-tax.entity';
+import { BillingPaymentMethod } from './billing/domain/entities/billing-payment-method.entity';
+import { UserOrmEntity } from './users/infrastructure/entities/user.orm-entity';
+import { UserProfileOrmEntity } from './users/infrastructure/entities/user-profile.orm-entity';
+import { BillingClient } from './billing/domain/entities/billing-client.entity';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -39,6 +42,9 @@ import { BillingService } from './billing/domain/entities/billing-service.entity
           UserProfileOrmEntity,
           BillingProduct,
           BillingService,
+          BillingTax,
+          BillingPaymentMethod,
+          BillingClient,
         ],
         // synchronize: true creates/updates the table automatically on startup.
         // ⚠️ Set to false in production and use migrations instead.
