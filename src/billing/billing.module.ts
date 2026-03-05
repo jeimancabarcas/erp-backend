@@ -9,9 +9,18 @@ import { GetBillingProductsUseCase } from './application/use-cases/get-billing-p
 import { UpdateBillingProductUseCase } from './application/use-cases/update-billing-product.use-case';
 import { DeleteBillingProductUseCase } from './application/use-cases/delete-billing-product.use-case';
 
+import { BillingServicesController } from './presentation/billing-services.controller';
+import { BillingService } from './domain/entities/billing-service.entity';
+import { BILLING_SERVICE_REPOSITORY } from './domain/repositories/billing-service.repository';
+import { TypeOrmBillingServiceRepository } from './infrastructure/repositories/typeorm-billing-service.repository';
+import { CreateBillingServiceUseCase } from './application/use-cases/create-billing-service.use-case';
+import { GetBillingServicesUseCase } from './application/use-cases/get-billing-services.use-case';
+import { UpdateBillingServiceUseCase } from './application/use-cases/update-billing-service.use-case';
+import { DeleteBillingServiceUseCase } from './application/use-cases/delete-billing-service.use-case';
+
 @Module({
-    imports: [TypeOrmModule.forFeature([BillingProduct])],
-    controllers: [BillingProductsController],
+    imports: [TypeOrmModule.forFeature([BillingProduct, BillingService])],
+    controllers: [BillingProductsController, BillingServicesController],
     providers: [
         {
             provide: BILLING_PRODUCT_REPOSITORY,
@@ -21,6 +30,14 @@ import { DeleteBillingProductUseCase } from './application/use-cases/delete-bill
         GetBillingProductsUseCase,
         UpdateBillingProductUseCase,
         DeleteBillingProductUseCase,
+        {
+            provide: BILLING_SERVICE_REPOSITORY,
+            useClass: TypeOrmBillingServiceRepository,
+        },
+        CreateBillingServiceUseCase,
+        GetBillingServicesUseCase,
+        UpdateBillingServiceUseCase,
+        DeleteBillingServiceUseCase,
     ],
     exports: [],
 })

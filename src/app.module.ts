@@ -13,6 +13,7 @@ import { UserOrmEntity } from './users/infrastructure/entities/user.orm-entity';
 import { UserProfileOrmEntity } from './users/infrastructure/entities/user-profile.orm-entity';
 import { BillingModule } from './billing/billing.module';
 import { BillingProduct } from './billing/domain/entities/billing-product.entity';
+import { BillingService } from './billing/domain/entities/billing-service.entity';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { BillingProduct } from './billing/domain/entities/billing-product.entity
           UserOrmEntity,
           UserProfileOrmEntity,
           BillingProduct,
+          BillingService,
         ],
         // synchronize: true creates/updates the table automatically on startup.
         // ⚠️ Set to false in production and use migrations instead.
