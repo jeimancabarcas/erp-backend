@@ -18,6 +18,9 @@ export class CreateBillingProductUseCase {
                 throw new ConflictException('Este producto de inventario ya se encuentra vinculado a otro producto de facturación.');
             }
         }
-        return this.billingProductRepository.create(createBillingProductDto);
+        return this.billingProductRepository.create({
+            ...createBillingProductDto,
+            taxes: createBillingProductDto.taxes?.map(t => ({ taxId: t.taxId, rate: t.rate })) as any
+        });
     }
 }

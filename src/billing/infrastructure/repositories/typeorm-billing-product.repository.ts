@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BillingProduct } from '../../domain/entities/billing-product.entity';
+import { BillingProductTax } from '../../domain/entities/billing-product-tax.entity';
 import { BillingProductRepository } from '../../domain/repositories/billing-product.repository';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class TypeOrmBillingProductRepository implements BillingProductRepository
 
     async findAll(): Promise<BillingProduct[]> {
         return this.repository.find({
-            relations: ['inventoryProduct'],
+            relations: ['inventoryProduct', 'taxes', 'taxes.tax'],
             order: { createdAt: 'DESC' }
         });
     }
@@ -26,7 +27,7 @@ export class TypeOrmBillingProductRepository implements BillingProductRepository
     async findById(id: string): Promise<BillingProduct | null> {
         const product = await this.repository.findOne({
             where: { id },
-            relations: ['inventoryProduct']
+            relations: ['inventoryProduct', 'taxes', 'taxes.tax']
         });
         return product || null;
     }
@@ -44,7 +45,34 @@ export class TypeOrmBillingProductRepository implements BillingProductRepository
             throw new NotFoundException(`BillingProduct with ID ${id} not found`);
         }
 
-        Object.assign(product, productData);
+        const { taxes, ...otherData } = productData;
+        Object.assign(product, otherData);
+
+        if (taxes !== undefined) {
+            const incomingTaxes = taxes as any[];
+            const currentTaxes = product.taxes || [];
+
+            // 1. Identify and remove taxes no longer present
+            const incomingTaxDefIds = incomingTaxes.map(t => t.taxId);
+            const taxesToRemove = currentTaxes.filter(ct => !incomingTaxDefIds.includes(ct.taxId));
+            if (taxesToRemove.length > 0) {
+                await this.repository.manager.remove(taxesToRemove);
+            }
+
+            // 2. Map incoming taxes to entity objects, preserving IDs for existing ones
+            product.taxes = incomingTaxes.map(it => {
+                let existing = currentTaxes.find(ct => ct.taxId === it.taxId);
+                const tax = existing || new BillingProductTax();
+
+                tax.taxId = it.taxId;
+                tax.rate = it.rate;
+                tax.productId = product.id;
+                // tax.product = product; // Remove to prevent circular JSON error
+
+                return tax;
+            });
+        }
+
         if (productData.inventoryProductId === null) {
             product.inventoryProduct = undefined;
             product.inventoryProductId = null;

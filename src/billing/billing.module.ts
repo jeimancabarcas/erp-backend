@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BillingProductsController } from './presentation/billing-products.controller';
 import { BillingProduct } from './domain/entities/billing-product.entity';
 import { BILLING_PRODUCT_REPOSITORY } from './domain/repositories/billing-product.repository';
+import { BillingProductTax } from './domain/entities/billing-product-tax.entity';
+import { BillingServiceTax } from './domain/entities/billing-service-tax.entity';
 import { TypeOrmBillingProductRepository } from './infrastructure/repositories/typeorm-billing-product.repository';
 import { CreateBillingProductUseCase } from './application/use-cases/create-billing-product.use-case';
 import { GetBillingProductsUseCase } from './application/use-cases/get-billing-products.use-case';
@@ -60,6 +62,8 @@ import { BillingTemplatePreferencesController } from './presentation/billing-tem
         BillingPaymentMethod,
         BillingClient,
         BillingTemplatePreference,
+        BillingProductTax,
+        BillingServiceTax,
     ])],
     controllers: [
         BillingProductsController,

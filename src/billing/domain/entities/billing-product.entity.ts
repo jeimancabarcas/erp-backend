@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { ProductOrmEntity } from '../../../inventory/products/infrastructure/entities/product.orm-entity';
+import { BillingProductTax } from './billing-product-tax.entity';
 
 @Entity('billing_products')
 export class BillingProduct {
@@ -24,6 +25,9 @@ export class BillingProduct {
     @ManyToOne(() => ProductOrmEntity, { nullable: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'inventoryProductId' })
     inventoryProduct?: ProductOrmEntity;
+
+    @OneToMany(() => BillingProductTax, (productTax) => productTax.product, { cascade: true, orphanRemoval: true } as any)
+    taxes: BillingProductTax[];
 
     @CreateDateColumn()
     createdAt: Date;

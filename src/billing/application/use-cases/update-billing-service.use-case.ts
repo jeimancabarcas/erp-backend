@@ -12,6 +12,13 @@ export class UpdateBillingServiceUseCase {
     ) { }
 
     async execute(id: string, dto: UpdateBillingServiceDto): Promise<BillingService> {
-        return await this.repository.update(id, dto);
+        return await this.repository.update(id, {
+            ...dto,
+            taxes: dto.taxes?.map(t => ({
+                serviceId: id,
+                taxId: t.taxId,
+                rate: t.rate
+            })) as any
+        });
     }
 }

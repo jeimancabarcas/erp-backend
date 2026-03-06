@@ -18,6 +18,13 @@ export class UpdateBillingProductUseCase {
                 throw new ConflictException('Este producto de inventario ya se encuentra vinculado a otro producto de facturación.');
             }
         }
-        return this.billingProductRepository.update(id, updateBillingProductDto);
+        return this.billingProductRepository.update(id, {
+            ...updateBillingProductDto,
+            taxes: updateBillingProductDto.taxes?.map(t => ({
+                productId: id,
+                taxId: t.taxId,
+                rate: t.rate
+            })) as any
+        });
     }
 }

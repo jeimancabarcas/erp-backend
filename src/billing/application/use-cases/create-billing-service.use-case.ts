@@ -13,10 +13,8 @@ export class CreateBillingServiceUseCase {
 
     async execute(dto: CreateBillingServiceDto): Promise<BillingService> {
         return await this.repository.create({
-            name: dto.name,
-            price: dto.price,
-            standardCode: dto.standardCode || null,
-            internalCode: dto.internalCode,
+            ...dto,
+            taxes: dto.taxes?.map(t => ({ taxId: t.taxId, rate: t.rate })) as any
         });
     }
 }

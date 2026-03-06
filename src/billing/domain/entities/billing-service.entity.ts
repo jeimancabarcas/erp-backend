@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { BillingServiceTax } from './billing-service-tax.entity';
 
 @Entity('billing_services')
 export class BillingService {
@@ -16,6 +17,9 @@ export class BillingService {
 
     @Column() // internalCode is mandatory for services just like products
     internalCode: string;
+
+    @OneToMany(() => BillingServiceTax, (serviceTax) => serviceTax.service, { cascade: true, orphanRemoval: true } as any)
+    taxes: BillingServiceTax[];
 
     @CreateDateColumn()
     createdAt: Date;
