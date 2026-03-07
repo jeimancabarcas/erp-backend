@@ -21,4 +21,12 @@ export class TypeOrmBillingPaymentFrequencyRepository implements BillingPaymentF
     async findById(id: string): Promise<BillingPaymentFrequency | null> {
         return await this.repository.findOne({ where: { id } });
     }
+
+    async save(frequency: BillingPaymentFrequency): Promise<BillingPaymentFrequency> {
+        return await this.repository.save(frequency);
+    }
+
+    async delete(id: string): Promise<void> {
+        await this.repository.update(id, { status: false });
+    }
 }

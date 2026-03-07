@@ -42,12 +42,18 @@ import { BillingPaymentFrequency } from './domain/entities/billing-payment-frequ
 import { BILLING_PAYMENT_FREQUENCY_REPOSITORY } from './domain/repositories/billing-payment-frequency.repository';
 import { TypeOrmBillingPaymentFrequencyRepository } from './infrastructure/repositories/typeorm-billing-payment-frequency.repository';
 import { GetBillingPaymentFrequenciesUseCase } from './application/use-cases/get-billing-payment-frequencies.use-case';
+import { CreateBillingPaymentFrequencyUseCase } from './application/use-cases/create-billing-payment-frequency.use-case';
+import { UpdateBillingPaymentFrequencyUseCase } from './application/use-cases/update-billing-payment-frequency.use-case';
+import { DeleteBillingPaymentFrequencyUseCase } from './application/use-cases/delete-billing-payment-frequency.use-case';
 import { BillingPaymentFrequenciesController } from './presentation/billing-payment-frequencies.controller';
 
 import { BillingPaymentTerm } from './domain/entities/billing-payment-term.entity';
 import { BILLING_PAYMENT_TERM_REPOSITORY } from './domain/repositories/billing-payment-term.repository';
 import { TypeOrmBillingPaymentTermRepository } from './infrastructure/repositories/typeorm-billing-payment-term.repository';
 import { GetBillingPaymentTermsUseCase } from './application/use-cases/get-billing-payment-terms.use-case';
+import { CreateBillingPaymentTermUseCase } from './application/use-cases/create-billing-payment-term.use-case';
+import { UpdateBillingPaymentTermUseCase } from './application/use-cases/update-billing-payment-term.use-case';
+import { DeleteBillingPaymentTermUseCase } from './application/use-cases/delete-billing-payment-term.use-case';
 import { BillingPaymentTermsController } from './presentation/billing-payment-terms.controller';
 
 import { BillingClient } from './domain/entities/billing-client.entity';
@@ -143,11 +149,17 @@ import { BillingTemplatePreferencesController } from './presentation/billing-tem
             useClass: TypeOrmBillingPaymentFrequencyRepository,
         },
         GetBillingPaymentFrequenciesUseCase,
+        CreateBillingPaymentFrequencyUseCase,
+        UpdateBillingPaymentFrequencyUseCase,
+        DeleteBillingPaymentFrequencyUseCase,
         {
             provide: BILLING_PAYMENT_TERM_REPOSITORY,
             useClass: TypeOrmBillingPaymentTermRepository,
         },
         GetBillingPaymentTermsUseCase,
+        CreateBillingPaymentTermUseCase,
+        UpdateBillingPaymentTermUseCase,
+        DeleteBillingPaymentTermUseCase,
     ],
     exports: [],
 })

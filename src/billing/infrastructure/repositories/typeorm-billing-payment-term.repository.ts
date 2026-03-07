@@ -21,4 +21,12 @@ export class TypeOrmBillingPaymentTermRepository implements BillingPaymentTermRe
     async findById(id: string): Promise<BillingPaymentTerm | null> {
         return await this.repository.findOne({ where: { id } });
     }
+
+    async save(term: BillingPaymentTerm): Promise<BillingPaymentTerm> {
+        return await this.repository.save(term);
+    }
+
+    async delete(id: string): Promise<void> {
+        await this.repository.update(id, { status: false });
+    }
 }

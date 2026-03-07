@@ -5,4 +5,6 @@ export const BILLING_PAYMENT_FREQUENCY_REPOSITORY = 'BILLING_PAYMENT_FREQUENCY_R
 export interface BillingPaymentFrequencyRepository {
     findAll(): Promise<BillingPaymentFrequency[]>;
     findById(id: string): Promise<BillingPaymentFrequency | null>;
+    save(frequency: BillingPaymentFrequency): Promise<BillingPaymentFrequency>;
+    delete(id: string): Promise<void>;
 }
