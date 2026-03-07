@@ -50,6 +50,9 @@ export class TypeOrmUserRepository extends UserRepository {
             row.profile.phone,
             row.profile.displayName,
             row.profile.userId,
+            row.profile.position,
+            row.profile.identificationNumber,
+            row.profile.identificationType,
             row.profile.avatarUrl
         ) : null;
 
@@ -74,6 +77,9 @@ export class TypeOrmUserRepository extends UserRepository {
             pOrm.address = user.profile.address;
             pOrm.phone = user.profile.phone;
             pOrm.displayName = user.profile.displayName;
+            pOrm.position = user.profile.position;
+            pOrm.identificationNumber = user.profile.identificationNumber;
+            pOrm.identificationType = user.profile.identificationType;
             pOrm.avatarUrl = user.profile.avatarUrl as any;
             pOrm.userId = user.id;
             orm.profile = pOrm;

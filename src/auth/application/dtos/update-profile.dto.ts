@@ -25,4 +25,19 @@ export class UpdateProfileDto {
     @ApiProperty({ example: '/uploads/abc123_.jpg', required: false, nullable: true })
     @IsOptional()
     avatarUrl?: string | null;
+
+    @ApiProperty({ example: 'Gerente Comercial', required: false })
+    @IsOptional()
+    @IsString()
+    position?: string;
+
+    @ApiProperty({ example: '123456789', required: false })
+    @IsOptional()
+    @IsString()
+    identificationNumber?: string;
+
+    @ApiProperty({ example: 'CC', required: false })
+    @IsOptional()
+    @IsString()
+    identificationType?: string;
 }

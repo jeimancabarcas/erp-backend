@@ -10,16 +10,25 @@ export class UserProfileOrmEntity {
     fullName: string;
 
     @Column({ type: 'text', nullable: true })
-    address: string;
+    address: string | null;
 
-    @Column({ nullable: true })
-    phone: string;
+    @Column({ type: 'varchar', nullable: true })
+    phone: string | null;
 
-    @Column({ name: 'display_name', nullable: true })
-    displayName: string;
+    @Column({ name: 'display_name', type: 'varchar', nullable: true })
+    displayName: string | null;
 
-    @Column({ name: 'avatar_url', nullable: true })
-    avatarUrl: string;
+    @Column({ name: 'avatar_url', type: 'varchar', nullable: true })
+    avatarUrl: string | null;
+
+    @Column({ type: 'varchar', nullable: true })
+    position: string | null;
+
+    @Column({ name: 'identification_number', type: 'varchar', nullable: true })
+    identificationNumber: string | null;
+
+    @Column({ name: 'identification_type', type: 'varchar', nullable: true })
+    identificationType: string | null;
 
     @Column({ name: 'user_id' })
     userId: string;
