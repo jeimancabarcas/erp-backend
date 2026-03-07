@@ -14,6 +14,27 @@ export class BillingTemplatePreference {
     @Column({ type: 'varchar', length: 500, nullable: true })
     logoUrl: string | null;
 
+    @Column({ type: 'varchar', length: 50, nullable: true })
+    nit: string | null;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    companyName: string | null;
+
+    @Column({ type: 'text', nullable: true })
+    address: string | null;
+
+    @Column({ type: 'varchar', length: 50, nullable: true })
+    phone1: string | null;
+
+    @Column({ type: 'varchar', length: 50, nullable: true })
+    phone2: string | null;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    email: string | null;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    website: string | null;
+
     @CreateDateColumn()
     createdAt: Date;
 

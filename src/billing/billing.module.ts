@@ -52,6 +52,7 @@ import { BILLING_TEMPLATE_PREFERENCE_REPOSITORY } from './domain/repositories/bi
 import { TypeOrmBillingTemplatePreferenceRepository } from './infrastructure/repositories/typeorm-billing-template-preference.repository';
 import { GetTemplatePreferenceUseCase } from './application/use-cases/get-template-preference.use-case';
 import { UpsertTemplatePreferenceUseCase } from './application/use-cases/upsert-template-preference.use-case';
+import { UploadLogoUseCase } from './application/use-cases/upload-logo.use-case';
 import { BillingTemplatePreferencesController } from './presentation/billing-template-preferences.controller';
 
 @Module({
@@ -120,6 +121,7 @@ import { BillingTemplatePreferencesController } from './presentation/billing-tem
         },
         GetTemplatePreferenceUseCase,
         UpsertTemplatePreferenceUseCase,
+        UploadLogoUseCase,
     ],
     exports: [],
 })

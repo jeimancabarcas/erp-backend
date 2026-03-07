@@ -17,6 +17,9 @@ export class UpdateProfileUseCase {
             address: dto.address,
             phone: dto.phone,
             displayName: dto.displayName,
+            position: dto.position,
+            identificationNumber: dto.identificationNumber,
+            identificationType: dto.identificationType,
         };
 
         if (dto.avatarUrl !== undefined) {

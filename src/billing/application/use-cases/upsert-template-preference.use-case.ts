@@ -15,6 +15,34 @@ export class UpsertPreferenceDto {
     @IsOptional()
     @IsString()
     logoUrl?: string | null;
+
+    @IsOptional()
+    @IsString()
+    nit?: string | null;
+
+    @IsOptional()
+    @IsString()
+    companyName?: string | null;
+
+    @IsOptional()
+    @IsString()
+    address?: string | null;
+
+    @IsOptional()
+    @IsString()
+    phone1?: string | null;
+
+    @IsOptional()
+    @IsString()
+    phone2?: string | null;
+
+    @IsOptional()
+    @IsString()
+    email?: string | null;
+
+    @IsOptional()
+    @IsString()
+    website?: string | null;
 }
 
 @Injectable()
