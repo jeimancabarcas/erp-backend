@@ -5,13 +5,22 @@ import { BillingInvoiceRepository } from '../domain/repositories/billing-invoice
 import { ApiResponse } from '../../common/dto/api-response.dto';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+import { GetNextInvoiceNumberUseCase } from '../application/use-cases/get-next-invoice-number.use-case';
+
 @ApiTags('Billing Invoices')
 @Controller('billing-invoices')
 export class BillingInvoicesController {
     constructor(
         private readonly createInvoiceUseCase: CreateBillingInvoiceUseCase,
+        private readonly getNextInvoiceNumberUseCase: GetNextInvoiceNumberUseCase,
         private readonly repository: BillingInvoiceRepository,
     ) { }
+
+    @Get('next-number')
+    @ApiOperation({ summary: 'Get the predicted next invoice number' })
+    async getNextNumber() {
+        return await this.getNextInvoiceNumberUseCase.execute();
+    }
 
     @Post()
     @ApiOperation({ summary: 'Create a new invoice snapshot' })

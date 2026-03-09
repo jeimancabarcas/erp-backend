@@ -28,4 +28,13 @@ export class TypeOrmBillingInvoiceRepository implements BillingInvoiceRepository
             relations: ['items', 'items.taxes']
         });
     }
+
+    async findLastInvoiceNumber(): Promise<string | null> {
+        const lastInvoice = await this.repository.findOne({
+            select: ['invoiceNumber'],
+            order: { createdAt: 'DESC' },
+            where: {}
+        });
+        return lastInvoice ? lastInvoice.invoiceNumber : null;
+    }
 }

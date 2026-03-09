@@ -12,8 +12,10 @@ export class CreateBillingInvoiceUseCase {
     async execute(dto: CreateBillingInvoiceDto): Promise<BillingInvoice> {
         const invoice = new BillingInvoice();
 
-        // Basic Info
-        invoice.invoiceNumber = dto.invoiceNumber;
+        // Automatic Consecutive Generation
+        const lastNumber = await this.repository.findLastInvoiceNumber();
+        invoice.invoiceNumber = this.generateNextNumber(lastNumber);
+
         invoice.invoiceDate = new Date(dto.invoiceDate);
 
         // Company Snapshot
@@ -81,6 +83,21 @@ export class CreateBillingInvoiceUseCase {
             return item;
         });
 
+
         return await this.repository.save(invoice);
+    }
+
+    private generateNextNumber(lastNumber: string | null): string {
+        if (!lastNumber) return '00001';
+
+        // Extract numeric part (handles potential prefixes if needed, currently assumes pure numeric-string)
+        const numericMatch = lastNumber.match(/\d+/);
+        if (!numericMatch) return '00001';
+
+        const lastNumericValue = parseInt(numericMatch[0], 10);
+        const nextNumericValue = lastNumericValue + 1;
+
+        // Pad with zeros to 5 digits
+        return nextNumericValue.toString().padStart(5, '0');
     }
 }
