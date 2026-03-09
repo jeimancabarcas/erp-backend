@@ -72,6 +72,14 @@ import { GetTemplatePreferenceUseCase } from './application/use-cases/get-templa
 import { UpsertTemplatePreferenceUseCase } from './application/use-cases/upsert-template-preference.use-case';
 import { UploadLogoUseCase } from './application/use-cases/upload-logo.use-case';
 import { BillingTemplatePreferencesController } from './presentation/billing-template-preferences.controller';
+import { BillingInvoice } from './domain/entities/billing-invoice.entity';
+import { BillingInvoiceItem } from './domain/entities/billing-invoice-item.entity';
+import { BillingInvoiceItemTax } from './domain/entities/billing-invoice-item-tax.entity';
+import { BILLING_INVOICE_REPOSITORY } from './domain/repositories/billing-invoice.repository';
+import { TypeOrmBillingInvoiceRepository } from './infrastructure/repositories/typeorm-billing-invoice.repository';
+import { CreateBillingInvoiceUseCase } from './application/use-cases/create-billing-invoice.use-case';
+import { BillingInvoicesController } from './presentation/billing-invoices.controller';
+import { BillingInvoiceRepository } from './domain/repositories/billing-invoice.repository';
 
 @Module({
     imports: [TypeOrmModule.forFeature([
@@ -85,6 +93,9 @@ import { BillingTemplatePreferencesController } from './presentation/billing-tem
         BillingServiceTax,
         BillingPaymentFrequency,
         BillingPaymentTerm,
+        BillingInvoice,
+        BillingInvoiceItem,
+        BillingInvoiceItemTax,
     ])],
     controllers: [
         BillingProductsController,
@@ -95,6 +106,7 @@ import { BillingTemplatePreferencesController } from './presentation/billing-tem
         BillingTemplatePreferencesController,
         BillingPaymentFrequenciesController,
         BillingPaymentTermsController,
+        BillingInvoicesController,
     ],
     providers: [
         {
@@ -160,6 +172,11 @@ import { BillingTemplatePreferencesController } from './presentation/billing-tem
         CreateBillingPaymentTermUseCase,
         UpdateBillingPaymentTermUseCase,
         DeleteBillingPaymentTermUseCase,
+        {
+            provide: BillingInvoiceRepository,
+            useClass: TypeOrmBillingInvoiceRepository,
+        },
+        CreateBillingInvoiceUseCase,
     ],
     exports: [],
 })

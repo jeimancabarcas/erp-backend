@@ -21,6 +21,9 @@ import { BillingProductTax } from './billing/domain/entities/billing-product-tax
 import { BillingServiceTax } from './billing/domain/entities/billing-service-tax.entity';
 import { BillingPaymentFrequency } from './billing/domain/entities/billing-payment-frequency.entity';
 import { BillingPaymentTerm } from './billing/domain/entities/billing-payment-term.entity';
+import { BillingInvoice } from './billing/domain/entities/billing-invoice.entity';
+import { BillingInvoiceItem } from './billing/domain/entities/billing-invoice-item.entity';
+import { BillingInvoiceItemTax } from './billing/domain/entities/billing-invoice-item-tax.entity';
 import { BillingModule } from './billing/billing.module';
 
 @Module({
@@ -55,6 +58,9 @@ import { BillingModule } from './billing/billing.module';
           BillingServiceTax,
           BillingPaymentFrequency,
           BillingPaymentTerm,
+          BillingInvoice,
+          BillingInvoiceItem,
+          BillingInvoiceItemTax,
         ],
         // synchronize: true creates/updates the table automatically on startup.
         // ⚠️ Set to false in production and use migrations instead.
