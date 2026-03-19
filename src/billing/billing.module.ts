@@ -78,6 +78,7 @@ import { BillingInvoiceItemTax } from './domain/entities/billing-invoice-item-ta
 import { BILLING_INVOICE_REPOSITORY } from './domain/repositories/billing-invoice.repository';
 import { TypeOrmBillingInvoiceRepository } from './infrastructure/repositories/typeorm-billing-invoice.repository';
 import { CreateBillingInvoiceUseCase } from './application/use-cases/create-billing-invoice.use-case';
+import { UpdateBillingInvoiceStatusUseCase } from './application/use-cases/update-billing-invoice-status.use-case';
 import { GetNextInvoiceNumberUseCase } from './application/use-cases/get-next-invoice-number.use-case';
 import { BillingInvoicesController } from './presentation/billing-invoices.controller';
 import { BillingInvoiceRepository } from './domain/repositories/billing-invoice.repository';
@@ -178,6 +179,7 @@ import { BillingInvoiceRepository } from './domain/repositories/billing-invoice.
             useClass: TypeOrmBillingInvoiceRepository,
         },
         CreateBillingInvoiceUseCase,
+        UpdateBillingInvoiceStatusUseCase,
         GetNextInvoiceNumberUseCase,
     ],
     exports: [],

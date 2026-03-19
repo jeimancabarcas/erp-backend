@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateBillingInvoiceUseCase } from '../application/use-cases/create-billing-invoice.use-case';
+import { UpdateBillingInvoiceStatusUseCase } from '../application/use-cases/update-billing-invoice-status.use-case';
 import { CreateBillingInvoiceDto } from '../application/dtos/billing-invoice.dto';
 import { BillingInvoiceRepository } from '../domain/repositories/billing-invoice.repository';
 import { ApiResponse } from '../../common/dto/api-response.dto';
@@ -12,6 +13,7 @@ import { GetNextInvoiceNumberUseCase } from '../application/use-cases/get-next-i
 export class BillingInvoicesController {
     constructor(
         private readonly createInvoiceUseCase: CreateBillingInvoiceUseCase,
+        private readonly updateStatusUseCase: UpdateBillingInvoiceStatusUseCase,
         private readonly getNextInvoiceNumberUseCase: GetNextInvoiceNumberUseCase,
         private readonly repository: BillingInvoiceRepository,
     ) { }
@@ -38,5 +40,11 @@ export class BillingInvoicesController {
     @ApiOperation({ summary: 'Get invoice snapshot by ID' })
     async findById(@Param('id') id: string) {
         return await this.repository.findById(id);
+    }
+
+    @Patch(':id/status')
+    @ApiOperation({ summary: 'Update invoice status' })
+    async updateStatus(@Param('id') id: string, @Body('status') status: string) {
+        return await this.updateStatusUseCase.execute(id, status);
     }
 }
